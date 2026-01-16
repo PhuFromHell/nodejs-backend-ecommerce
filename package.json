@@ -17,6 +17,7 @@
     "mongoose": "^9.1.4"
   },
   "devDependencies": {
+    "dotenv": "^17.2.3",
     "helmet": "^8.1.0",
     "morgan": "^1.10.1"
   }
