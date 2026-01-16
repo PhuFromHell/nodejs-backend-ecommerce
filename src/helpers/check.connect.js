@@ -36,5 +36,5 @@ const checkOverloadConnections = () => {
 }
 
 module.exports = {
-    countConnect
+    countConnect, checkOverloadConnections
 };

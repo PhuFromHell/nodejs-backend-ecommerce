@@ -1,8 +1,12 @@
+require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const compression = require('compression');
 const app = express();
+
+console.log(`process.env.NODE_ENV = ${process.env.NODE_ENV}`);
+
 
 // init middleware
 app.use(morgan('dev')); // dùng để log các request đến server
@@ -21,7 +25,7 @@ app.use(compression()); // nén response để tăng tốc độ truyền tải 
 // init db
 // require('./dbs/init.mongodb.js');
 require('./dbs/init.mongodb')
-const { countConnect } = require('./helpers/check.connect');
+const { countConnect, checkOverloadConnections } = require('./helpers/check.connect');
 countConnect();
 checkOverloadConnections();
 // init routes
