@@ -18,6 +18,6 @@ npm i compression
 
 node --watch server.js
 
-
+npm install mongoose
 
 # nodejs-backend-ecommerce
