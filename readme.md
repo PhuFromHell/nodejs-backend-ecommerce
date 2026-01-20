@@ -20,4 +20,9 @@ npm install mongoose
 
 npm install dotenv --save-dev
 
+npm install --save-dev nodemon
+npm i bcrypt --save
+npm i crypto --save
+npm install jsonwebtoken
+npm i lodash --save // hỗ trợ get data
 # nodejs-backend-ecommerce

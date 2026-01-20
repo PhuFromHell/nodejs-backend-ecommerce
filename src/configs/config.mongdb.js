@@ -11,7 +11,7 @@ const app = require("../app");
 //         mongodb: {
 //             host: 'localhost',
 //             port: 27017,
-//             databaseName: 'shop_DEV',
+//             databaseName: 'shopDEV',
 //             user: '',
 //         }
 //     }
@@ -25,7 +25,7 @@ const app = require("../app");
 //     db: {
 //         host: 'localhost',
 //         port: 27017,
-//         databaseName: 'shop_DEV',
+//         databaseName: 'shopDEV',
 //         user: ''
 //     }
 // }
@@ -37,7 +37,7 @@ const app = require("../app");
 //     db: {
 //         host: 'localhost',
 //         port: 27017,
-//         databaseName: 'shop_PRD',
+//         databaseName: 'shopPRD',
 //         user: ''
 //     }
 // }
@@ -52,7 +52,7 @@ const dev = {
     db: {
         host: process.env.DEV_DB_HOST || 'localhost',
         port: process.env.DEV_DB_PORT  || 27017,
-        name: process.env.DEV_DB_NAME  || 'shop_DEV',
+        name: process.env.DEV_DB_NAME  || 'shopDEV',
         user: ''
     }
 }
@@ -64,7 +64,7 @@ const prd = {
     db: {
         host: process.env.PRD_DB_HOST || 'localhost',
         port: process.env.PRD_DB_PORT || 27017,
-        name: process.env.PRD_DB_NAME || 'shop_PRD',
+        name: process.env.PRD_DB_NAME || 'shopPRD',
         user: ''
     }
 }

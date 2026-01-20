@@ -8,4 +8,14 @@ bài 3:
     5 Có nên đóng connect db trong mongodb giống trong orecle không => đối với mongodb không cần thiết
     6 Poolsize là gì, vì sao quan trọng
     7 Nếu poolsize bị vượt qua kết nối
-    
+
+bài 4: 
+
+bài 5:
+    thêm nodemon
+    thêm router => chuyển router từ server.js sang thư mục router
+    thực hiện áp dụng thuật toán bất đối xứng trong jwt
+    1. sign shop
+    2. jwt với rsa
+    3. jwt lưu file pem vào mongodb 
+    4. export module với nhau để gọi làm việc

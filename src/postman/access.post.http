@@ -1,0 +1,23 @@
+@baseUrl=http://localhost:3000
+
+# signup
+POST {{baseUrl}}/v1/api/shop/signup
+    Content-Type: application/json
+    
+    {
+        "name": "My Shop",
+        "email": "2@example.com",
+        "password": "password123"
+    }
+
+###
+
+# signin
+POST {{baseUrl}}/v1/api/shop/signin
+Content-Type: application/json
+
+{
+    "email": "myshop@example.com",
+    "password": "password123"
+}
+###
