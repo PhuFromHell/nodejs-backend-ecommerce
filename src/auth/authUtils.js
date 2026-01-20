@@ -28,7 +28,4 @@ const createTokenPair = async (payload, publicKey, privateKey) => {
     }
 }
 
-// const { DataTypes, Model } = require('sequelize');
-// const sequelize = require('../config/sequelize');
-
 module.exports = {createTokenPair};
