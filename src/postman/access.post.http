@@ -2,14 +2,14 @@
 
 # signup
 POST {{baseUrl}}/v1/api/shop/signup
-    Content-Type: application/json
-    x-api-key: d2171375cea3873aefbabdf390c8dbf25ef280f11104117846bdf8998799bbbb664020bd8dd859a37f1fac889af79f8efddf04cd58e2faf68ea3bac7d7a53956
+  Content-Type: application/json
+  x-api-key: d2171375cea3873aefbabdf390c8dbf25ef280f11104117846bdf8998799bbbb664020bd8dd859a37f1fac889af79f8efddf04cd58e2faf68ea3bac7d7a53956
 
-    {
-        "name": "My Shop",
-        "email": "2@example.com",
-        "password": "password123"
-    }
+  {
+    "name": "My Shop",
+    "email": "2@example.com",
+    "password": "password123"
+  }
 
 ###
 
