@@ -7,7 +7,7 @@ POST {{baseUrl}}/v1/api/shop/signup
 
   {
     "name": "My Shop",
-    "email": "2@example.com",
+    "email": "ecommerce-shop-tip@example.com",
     "password": "password123"
   }
 
@@ -15,10 +15,11 @@ POST {{baseUrl}}/v1/api/shop/signup
 
 # signin
 POST {{baseUrl}}/v1/api/shop/signin
-Content-Type: application/json
-
-{
-    "email": "myshop@example.com",
+  Content-Type: application/json
+  x-api-key: d2171375cea3873aefbabdf390c8dbf25ef280f11104117846bdf8998799bbbb664020bd8dd859a37f1fac889af79f8efddf04cd58e2faf68ea3bac7d7a53956
+  
+  {
+    "email": "ecommerce-shop-tip@example.com",
     "password": "password123"
-}
+  }
 ###
