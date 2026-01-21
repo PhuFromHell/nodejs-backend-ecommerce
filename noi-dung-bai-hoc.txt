@@ -19,3 +19,10 @@ bài 5:
     2. jwt với rsa
     3. jwt lưu file pem vào mongodb 
     4. export module với nhau để gọi làm việc
+
+bài 6: 
+    custom dinamic middleware cho apikey và permission
+
+bài 7: Xử lý ErrorHandler trong API
+    xử lý error cho services, router
+    chặn 404 và 500 cho http status
