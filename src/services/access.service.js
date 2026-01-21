@@ -6,6 +6,7 @@ const { createTokenPair } = require('../auth/authUtils');
 const bccrypt = require('bcrypt');
 const crypto = require('node:crypto');
 const { getInfoData } = require('../utils/index.js');
+const { BadRequestError, ConflictRequestError } = require('../core/error.response.js');
 
 const RoleShop = {
     SHOP: 'SHOP',
@@ -18,15 +19,11 @@ class AccessService {
     
     signUp = async (name, email, password) => {
         // logic to save userData to database
-        try {
-            // step 1: validate data
+        // try {
+            // step 1: check email exist
             const holderShop = await shopModel.findOne({ email }).lean();
             if (holderShop) {
-                return {
-                    code: '23000',// email already in use
-                    message: 'Email shop already in use',
-                    status: 'error'
-                };
+                throw new BadRequestError('ERROR: Shop account already registered');
             }
 
             // step 2: save to db
@@ -79,13 +76,13 @@ class AccessService {
                 metadata: null
             };
 
-        } catch (error) {
-            return {
-                code: 'xxx',
-                message: error.message,
-                status: 'error'
-            };
-        }
+        // } catch (error) {
+        //     return {
+        //         code: 'xxx',
+        //         message: error.message,
+        //         status: 'error'
+        //     };
+        // }
     }
 
 }

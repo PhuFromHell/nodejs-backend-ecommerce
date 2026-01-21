@@ -40,5 +40,24 @@ app.use('/', require('./routers/index'));
 
 
 // handling errors
+// hàm middleware xử lý lỗi
+// hàm này sẽ được gọi khi không tìm thấy route phù hợp
+app.use((req, res, next) => {
+    const error = new Error('Not Found');
+    error.status = 404;
+    next(error);
+});
+
+// hàm quản lý lỗi error-handling middleware
+// hàm này dùng để xử lý tất cả các lỗi được truyền đến nó
+app.use((err, req, res, next) => {
+    const statusCode = err.status || 500;
+    return res.status(statusCode).json({
+        status: 'error',
+        code: statusCode,
+        message: err.message || 'Internal Server Error',
+        metadata: null
+    });
+});
 
 module.exports = app;
