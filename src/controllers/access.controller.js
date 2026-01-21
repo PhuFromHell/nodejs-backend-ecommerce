@@ -3,9 +3,20 @@
 const accessService = require("../services/access.service");
 
 // AcceptedResponse = OK, CreatedResponse = created
-const {  AcceptedResponse,  CreatedResponse,} = require("../core/success.response");
+const {
+  AcceptedResponse,
+  CreatedResponse,
+  SuccessResponse,
+} = require("../core/success.response");
 
 class AccessController {
+  login = async (req, res, next) => {
+    new SuccessResponse({
+      message: "SHOP: Login successfully",
+      metadata: await accessService.login(req.body),
+    }).send(res);
+  };
+
   signUp = async (req, res, next) => {
     new CreatedResponse({
       message: "SHOP: User created successfully",

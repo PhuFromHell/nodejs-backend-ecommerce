@@ -16,10 +16,10 @@ router.post(
 );
 
 // signin
-router.post("/signin", (req, res) => {
-  return res.status(200).json({
-    message: "Signin endpoint",
-  });
-});
+router.post(
+  "/shop/signin",
+  permissions("0000"),
+  asyncHandler(accessController.login),
+);
 
 module.exports = router;
