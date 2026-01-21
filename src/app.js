@@ -28,14 +28,8 @@ require('./dbs/init.mongodb')
 // const { countConnect, checkOverloadConnections } = require('./helpers/check.connect');
 // countConnect();
 // checkOverloadConnections();
+
 // init routes
-// app.get('/', (req, res) => {
-//   // const strCompression = 'strCompression say Hello World!';
-//   return res.status(200).json({
-//     message: 'Hello World!',
-//     // metadata: strCompression.repeat(100000)
-//   });
-// });
 app.use('/', require('./routers/index'));
 
 
