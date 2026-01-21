@@ -1,43 +1,46 @@
-'use strict';
+"use strict";
 
 //!dmbg
-const {model, Schema, Types} = require('mongoose'); // Erase if already required
+const { model, Schema, Types } = require("mongoose"); // Erase if already required
 
-const DOCUMENT_NAME = 'User';
-const COLLECTION_NAME = 'users';
+const DOCUMENT_NAME = "User";
+const COLLECTION_NAME = "users";
 
 // Declare the Schema of the Mongo model
-var shopSchema = new Schema({
-    name:{
-        type:String,
-        trim:true,
-        maxLength:150,
+var shopSchema = new Schema(
+  {
+    name: {
+      type: String,
+      trim: true,
+      maxLength: 150,
     },
-    email:{
-        type:String,
-        unique:true,
-        trim:true,
+    email: {
+      type: String,
+      unique: true,
+      trim: true,
     },
-    password:{
-        type:String,
-        required:true,
+    password: {
+      type: String,
+      required: true,
     },
-    status:{
-        type:String,
-        enum:['active', 'inactive'],
-        default:'inactive',
+    status: {
+      type: String,
+      enum: ["active", "inactive"],
+      default: "inactive",
     },
-    verify:{
-        type:Schema.Types.Boolean,
-        default:false,
+    verify: {
+      type: Schema.Types.Boolean,
+      default: false,
     },
-    role:{
-        type:Array,
-        default:[],
+    role: {
+      type: Array,
+      default: [],
     },
-}, 
-{
-    timestamps:true, collection: COLLECTION_NAME}
+  },
+  {
+    timestamps: true,
+    collection: COLLECTION_NAME,
+  },
 );
 
 //Export the model
