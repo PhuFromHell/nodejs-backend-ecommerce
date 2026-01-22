@@ -28,6 +28,14 @@ class AccessController {
       options: { limit: 10 },
     }).send(res);
   };
+
+  logout = async (req, res, next) => {
+    new AcceptedResponse({
+      message: "Logout successfully",
+      metadata: await accessService.logout(req.keyStore),
+    }).send(res);
+  };
 }
+
 
 module.exports = new AccessController();

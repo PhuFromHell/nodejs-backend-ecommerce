@@ -1,28 +1,37 @@
 bài 1:
 bài 2:
 bài 3:
-    1 Cánh connet phổ biến hiện nay và nhược điểm
-    2 Connet mới, khuyên dùng
-    3 Kiễm tra hệ thống có bao nhiêu connect hiện tại
-    4 Nhận thông báo khi phát hiện quá tải connect
-    5 Có nên đóng connect db trong mongodb giống trong orecle không => đối với mongodb không cần thiết
-    6 Poolsize là gì, vì sao quan trọng
-    7 Nếu poolsize bị vượt qua kết nối
+  1 Cánh connet phổ biến hiện nay và nhược điểm
+  2 Connet mới, khuyên dùng
+  3 Kiễm tra hệ thống có bao nhiêu connect hiện tại
+  4 Nhận thông báo khi phát hiện quá tải connect
+  5 Có nên đóng connect db trong mongodb giống trong orecle không => đối với mongodb không cần thiết
+  6 Poolsize là gì, vì sao quan trọng
+  7 Nếu poolsize bị vượt qua kết nối
 
 bài 4: 
 
 bài 5:
-    thêm nodemon
-    thêm router => chuyển router từ server.js sang thư mục router
-    thực hiện áp dụng thuật toán bất đối xứng trong jwt
-    1. sign shop
-    2. jwt với rsa
-    3. jwt lưu file pem vào mongodb 
-    4. export module với nhau để gọi làm việc
+  thêm nodemon
+  thêm router => chuyển router từ server.js sang thư mục router
+  thực hiện áp dụng thuật toán bất đối xứng trong jwt
+  1. sign shop
+  2. jwt với rsa
+  3. jwt lưu file pem vào mongodb 
+  4. export module với nhau để gọi làm việc
 
 bài 6: 
-    custom dinamic middleware cho apikey và permission
+  custom dinamic middleware cho apikey và permission
 
 bài 7: Xử lý ErrorHandler trong API
-    xử lý error cho services, router
-    chặn 404 và 500 cho http status
+  xử lý error cho services, router
+  chặn 404 và 500 cho http status
+
+
+bài 10:
+  1. check userId missing
+  2. get accessToken from header
+  3. verify token
+  4. check token in db
+  5. check key store with userId
+  6. return next()
