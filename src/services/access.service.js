@@ -5,13 +5,14 @@ const crypto = require("node:crypto");
 
 const shopModel = require("../models/shop.model.js");
 const KeyTokenService = require("./keytoken.service");
-const { createTokenPair } = require("../auth/authUtils");
+const { createTokenPair, verifyJWT } = require("../auth/authUtils");
 const { getInfoData } = require("../utils/index.js");
 const { findByEmail } = require("./shop.service.js");
 const {
   BadRequestError,
   ConflictRequestError,
   AuthFailureError,
+  ForbiddenError,
 } = require("../core/error.response.js");
 
 const RoleShop = {
@@ -22,11 +23,76 @@ const RoleShop = {
 };
 
 class AccessService {
+  /**
+   * 1. check token used
+   * 2. decode token to get user information
+   * 2.1. if token used => clear key store (logout) and force re-login
+   * 2.2. if token valid, then continue
+   * 3. generate new token pair
+   * 4. update token pair to db
+   * 5. return token pair
+   */
+  handleRefreshToken = async (refreshToken) => {
+    // step 1: check token used
+    const foundTokenUsed =
+      await KeyTokenService.findByRefreshTokenUsed(refreshToken);
+    // nếu token đã bị sử dụng rồi
+    if (foundTokenUsed) {
+      // decode để xem là đứa nào dùng token này
+      const { userId, email } = await verifyJWT(
+        refreshToken,
+        foundTokenUsed.privateKey,
+      );
+      console.log(
+        "🚀 1 ~ AccessService ~ handleRefreshToken ~ userId, email:",
+        userId,
+        email,
+      );
+      // xóa toàn bộ token trong database
+      await KeyTokenService.removeKeyById(foundTokenUsed._id);
+      throw new ForbiddenError("Something wrong happen. Please re-login");
+    }
+
+    // nếu token chưa bị sử dụng
+    const holderToken = await KeyTokenService.findByRefreshToken(refreshToken);
+    if (!holderToken) {
+      throw new AuthFailureError("1 Shop not registered");
+    }
+
+    // verify token
+    const { userId, email } = await verifyJWT(
+      refreshToken,
+      holderToken.privateKey,
+    );
+    // check userId + email
+    const foundShop = await findByEmail({ email });
+    if (!foundShop || foundShop._id.toString() !== userId) {
+      throw new AuthFailureError("2 Shop not registered");
+    }
+    // create new token pair
+    const tokens = await createTokenPair(
+      { userId, email },
+      holderToken.publicKey,
+      holderToken.privateKey,
+    );
+    // update token store
+    await KeyTokenService.updateRefreshToken(
+      holderToken._id,
+      tokens.refreshToken,
+      refreshToken,
+    );
+
+    // step 5: return token pair
+    return {
+      user: { userId, email },
+      tokens,
+    };
+  };
 
   // logout
   logout = async (keyStore) => {
     const delKey = await KeyTokenService.removeKeyById(keyStore._id);
-    console.log("🚀 ~ AccessService ~ delKey:", delKey)
+    console.log("🚀 ~ AccessService ~ delKey:", delKey);
     return delKey;
   };
   /*
