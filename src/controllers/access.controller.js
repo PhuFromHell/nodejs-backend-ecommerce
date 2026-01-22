@@ -1,6 +1,6 @@
 "use strict";
 
-const accessService = require("../services/access.service");
+const AccessService = require("../services/access.service");
 
 // AcceptedResponse = OK, CreatedResponse = created
 const {
@@ -10,17 +10,26 @@ const {
 } = require("../core/success.response");
 
 class AccessController {
+  handleRefreshToken = async (req, res, next) => {
+    new SuccessResponse({
+      message: "Shop: Get new access token successfully",
+      metadata: await AccessService.handleRefreshToken(
+        req.body.refreshToken,
+      ),
+    }).send(res);
+  };
+
   login = async (req, res, next) => {
     new SuccessResponse({
       message: "SHOP: Login successfully",
-      metadata: await accessService.login(req.body),
+      metadata: await AccessService.login(req.body),
     }).send(res);
   };
 
   signUp = async (req, res, next) => {
     new CreatedResponse({
       message: "SHOP: User created successfully",
-      metadata: await accessService.signUp(
+      metadata: await AccessService.signUp(
         req.body.name,
         req.body.email,
         req.body.password,
@@ -32,7 +41,7 @@ class AccessController {
   logout = async (req, res, next) => {
     new AcceptedResponse({
       message: "Logout successfully",
-      metadata: await accessService.logout(req.keyStore),
+      metadata: await AccessService.logout(req.keyStore),
     }).send(res);
   };
 }

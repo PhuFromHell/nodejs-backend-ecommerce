@@ -35,3 +35,10 @@ bài 10:
   4. check token in db
   5. check key store with userId
   6. return next()
+
+bài 11:
+  1. check token used
+  2. decode token to get user information
+  2.1. if token used => clear key store (logout) and force re-login
+  3. generate new token pair
+  4. update token pair to db

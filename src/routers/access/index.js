@@ -11,25 +11,14 @@ const router = express.Router();
 router.use(apiKey);
 
 // signup
-router.post(
-  "/shop/signup",
-  permissions("0000"),
-  asyncHandler(accessController.signUp),
-);
+router.post( "/shop/signup", permissions("0000"), asyncHandler(accessController.signUp),);
 
 // signin
-router.post(
-  "/shop/signin",
-  permissions("0000"),
-  asyncHandler(accessController.login),
-);
+router.post( "/shop/signin", permissions("0000"), asyncHandler(accessController.login),);
 
 // authentication
 router.use(authentication);
-router.post(
-  "/shop/logout",
-  permissions("0000"),
-  asyncHandler(accessController.logout),
-);
+router.post( "/shop/logout", permissions("0000"), asyncHandler(accessController.logout),);
+router.post( "/shop/handleRefreshToken", permissions("0000"), asyncHandler(accessController.handleRefreshToken),);
 
 module.exports = router;

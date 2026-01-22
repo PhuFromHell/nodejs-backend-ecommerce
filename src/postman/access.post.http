@@ -3,7 +3,7 @@
 # signup
 POST {{baseUrl}}/v1/api/shop/signup
   Content-Type: application/json
-  x-api-key: d2171375cea3873aefbabdf390c8dbf25ef280f11104117846bdf8998799bbbb664020bd8dd859a37f1fac889af79f8efddf04cd58e2faf68ea3bac7d7a53956
+  x-api-key: ee12231e4a79e46f59f908983528fc59d29c939542f54f8c9621fe204e04269e485de1c179f9fdac09530cf5b9928cdafe740e4776bb4127c995661bc8efd881
 
   {
     "name": "My Shop",
@@ -16,7 +16,7 @@ POST {{baseUrl}}/v1/api/shop/signup
 # signin
 POST {{baseUrl}}/v1/api/shop/signin
   Content-Type: application/json
-  x-api-key: d2171375cea3873aefbabdf390c8dbf25ef280f11104117846bdf8998799bbbb664020bd8dd859a37f1fac889af79f8efddf04cd58e2faf68ea3bac7d7a53956
+  x-api-key: ee12231e4a79e46f59f908983528fc59d29c939542f54f8c9621fe204e04269e485de1c179f9fdac09530cf5b9928cdafe740e4776bb4127c995661bc8efd881
   
   {
     "email": "ecommerce-shop-tip@example.com",
