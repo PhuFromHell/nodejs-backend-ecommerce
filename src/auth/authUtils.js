@@ -1,6 +1,17 @@
 "use strict";
 
 const jwt = require("jsonwebtoken");
+const { asyncHandler } = require("../helpers/asyncHandler.js");
+const { head } = require("lodash");
+// service
+const {findByUserId} = require("../services/keytoken.service.js");
+const { AuthFailureError, NotFoundError } = require("../core/error.response.js");
+
+const HEADER = {
+  API_KEY: "x-api-key",
+  AUTHORIZATION: "authorization",
+  CLIENT_ID: "x-client-id",
+};
 
 const createTokenPair = async (payload, publicKey, privateKey) => {
   try {
@@ -26,7 +37,46 @@ const createTokenPair = async (payload, publicKey, privateKey) => {
   } catch (error) {}
 };
 
-// const { DataTypes, Model } = require('sequelize');
-// const sequelize = require('../config/sequelize');
+const authentication = asyncHandler(async (req, res, next) => {
+  // Logic authentication
+  // 1. check userId missing
+  // 2. get accessToken from header
+  // 3. verify token
+  // 4. check token in db
+  // 5. check key store with userId
+  // 6. return next()
 
-module.exports = { createTokenPair };
+  // step 1: check userId missing
+  const userId = req.headers[HEADER.CLIENT_ID];
+  if (!userId) {
+    throw new AuthFailureError("Invalid request");
+  }
+
+  // step 2: get accessToken from header
+  const keyStore = await findByUserId(userId);
+  if (!keyStore) {
+    throw new NotFoundError("Not found key store");
+  }
+
+  // step 3: verify token
+  const accessToken = req.headers[HEADER.AUTHORIZATION];
+  if (!accessToken) {
+    throw new AuthFailureError("Invalid request");
+  }
+
+  // step 4: check token in db
+  try {
+    const decodeUser = jwt.verify(accessToken, keyStore.publicKey);
+    if (userId !== decodeUser.userId) {
+      throw new AuthFailureError("Invalid request userid");
+    }
+    req.keyStore = keyStore;
+    req.user = decodeUser;
+  } catch (error) {
+    console.log("error verify token:", error);
+  }
+
+  return next();
+});
+
+module.exports = { createTokenPair, authentication };
