@@ -1,6 +1,6 @@
 'use strict';
 
-const { Schema, model, Types } = require("mongoose");
+const { Schema, model } = require("mongoose");
 const DOCUMENT_NAME = "Product";
 const COLLECTION_NAME = "Products";
 
@@ -13,6 +13,7 @@ const productSchema = new Schema({
   product_price: { type: Number, required: true },
   product_quantity: { type: Number, required: true },
   product_type: { type: String, required: true, enum: PRODUCT_TYPE },
+  product_shop: { type: Schema.Types.ObjectId, ref: "Shop", required: true },
   product_attributes: { type: Schema.Types.Mixed, required: true },
 }, {
   collection: COLLECTION_NAME,
@@ -30,7 +31,7 @@ const clothingSchema = new Schema({
 
 // define the product type = electronics
 const electronicsSchema = new Schema({
-  manufatorer: { type: String, required: true },
+  manufacturer: { type: String, required: true },
   model: String,
   color: String,
 }, {
