@@ -41,6 +41,8 @@ app.use((req, res, next) => {
 // hàm này dùng để xử lý tất cả các lỗi được truyền đến nó
 app.use((err, req, res, next) => {
   const statusCode = err.status || 500;
+  console.log("🚀 ~ err.status:", err)
+  console.log("🚀 ~ statusCode:", statusCode);
   return res.status(statusCode).json({
     status: "error",
     code: statusCode,
