@@ -11,11 +11,23 @@ const {
 
 class AccessController {
   handleRefreshToken = async (req, res, next) => {
+    // v1 fixed need access token in body
+    // new SuccessResponse({
+    //   message: "Shop: Get new access token successfully",
+    //   metadata: await AccessService.handleRefreshToken(
+    //     req.body.refreshToken,
+    //   ),
+    // }).send(res);
+
+    // v2 fixed no need access token in body
+    console.log("🚀 ~ AccessController ~ req.user:", req.user)
     new SuccessResponse({
       message: "Shop: Get new access token successfully",
-      metadata: await AccessService.handleRefreshToken(
-        req.body.refreshToken,
-      ),
+      metadata: await AccessService.handleRefreshTokenV2({
+        refreshToken: req.refreshToken,
+        user: req.user,
+        keyStore: req.keyStore,
+      }),
     }).send(res);
   };
 
