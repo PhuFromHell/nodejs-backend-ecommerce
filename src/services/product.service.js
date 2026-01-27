@@ -34,8 +34,11 @@ class Product {
   }
 
   // Tạo product instance mới trong database
-  async createNewProduct() {
-    return await product.create(this);
+  async createProduct( product_id ) {
+    return await product.create({
+      ...this,
+      _id: product_id
+    });
   }
 }
 
@@ -49,7 +52,7 @@ class Clothing extends Product {
     }
 
     // Lưu product chính vào database
-    const newProduct = await super.createNewProduct();
+    const newProduct = await super.createProduct();
     if (!newProduct) {
       throw new BadRequestError("Create product failed");
     }
@@ -59,15 +62,17 @@ class Clothing extends Product {
 
 // Sub-class cho product type Electronics
 class Electronics extends Product {
+  // Override method createProduct
   async createProduct() {
-    // Validate electronics attributes
-    const newElectronics = new electronics(this.product_attributes);
+    const newElectronics = await electronics.create({
+      ...this.product_attributes, 
+      product_shop: this.product_shop
+    });
     if (!newElectronics) {
       throw new BadRequestError("Create electronics product failed");
     }
 
-    // Lưu product chính vào database
-    const newProduct = await super.createNewProduct();
+    const newProduct = await super.createProduct(newElectronics._id);
     if (!newProduct) {
       throw new BadRequestError("Create product failed");
     }
