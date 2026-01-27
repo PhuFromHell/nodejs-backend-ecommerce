@@ -32,6 +32,38 @@ class AccessService {
    * 4. update token pair to db
    * 5. return token pair
    */
+  handleRefreshTokenV2 = async ({ keyStore, user, refreshToken }) => {
+    const { userId, email } = user;
+    if (keyStore.refreshTokensUsed.includes(refreshToken)) {
+      // xóa toàn bộ token trong database
+      await KeyTokenService.removeKeyById(userId);
+      throw new ForbiddenError("Something wrong happen. Please re-login");
+    }
+    if (keyStore.refreshToken !== refreshToken) throw new AuthFailureError("Shop not registered");
+
+    // check userId + email
+    const foundShop = await findByEmail({ email });
+    if (!foundShop || foundShop._id.toString() !== userId) throw new AuthFailureError("2 Shop not registered");
+
+    // create new token pair
+    const tokens = await createTokenPair( { userId, email }, keyStore.publicKey, keyStore.privateKey, );
+    
+    // update token store
+    await KeyTokenService.updateRefreshToken( keyStore._id, tokens.refreshToken, refreshToken, );
+
+    // step 5: return token pair
+    return { user, tokens, };
+  };
+
+  /**
+   * 1. check token used
+   * 2. decode token to get user information
+   * 2.1. if token used => clear key store (logout) and force re-login
+   * 2.2. if token valid, then continue
+   * 3. generate new token pair
+   * 4. update token pair to db
+   * 5. return token pair
+   */
   handleRefreshToken = async (refreshToken) => {
     // step 1: check token used
     const foundTokenUsed =
