@@ -2,23 +2,23 @@
 
 const { models } = require("mongoose");
 
-const { product, clothing, electronics, furniture} = require("../models/product.model.js");
+const { product, clothing, electronics, furniture } = require("../models/product.model.js");
 const { BadRequestError } = require("../core/error.response.js");
 
 // Factory class để tạo product
 class ProductService {
-  // Tạo product dựa trên type (Electronics, Clothing, ...)
-  static async createProduct(type, payload) {
-    switch (type) {
-      case "Electronics":
-        return new Electronics(payload).createProduct();
-      case "Clothing":
-        return new Clothing(payload).createProduct();
-      case "Furniture":
-        return new Furniture(payload).createProduct();
-      default:
-        throw new BadRequestError(`Invalid product type: ${type}`);
-    }
+
+  static productRegistry = {} // key-class value
+
+  static registerProductType( type, classRef) {
+    ProductService.productRegistry[type] = classRef
+  }
+
+  static async createProduct( type, payload ) {
+    const productClass = ProductService.productRegistry[type];
+    if (!productClass) throw new BadRequestError(`Invalid product type: ${type}`);
+
+    return new productClass(payload).createProduct();
   }
 }
 
@@ -49,15 +49,11 @@ class Clothing extends Product {
   async createProduct() {
     // Validate clothing attributes
     const newClothing = new clothing(this.product_attributes);
-    if (!newClothing) {
-      throw new BadRequestError("Create clothing product failed");
-    }
+    if (!newClothing) throw new BadRequestError("Create clothing product failed");
 
     // Lưu product chính vào database
     const newProduct = await super.createProduct();
-    if (!newProduct) {
-      throw new BadRequestError("Create product failed");
-    }
+    if (!newProduct) throw new BadRequestError("Create product failed");
     return newProduct;
   }
 }
@@ -70,17 +66,14 @@ class Electronics extends Product {
       ...this.product_attributes, 
       product_shop: this.product_shop
     });
-    if (!newElectronics) {
-      throw new BadRequestError("Create electronics product failed");
-    }
+    if (!newElectronics) throw new BadRequestError("Create electronics product failed");
 
     const newProduct = await super.createProduct(newElectronics._id);
-    if (!newProduct) {
-      throw new BadRequestError("Create product failed");
-    }
+    if (!newProduct) throw new BadRequestError("Create product failed");
     return newProduct;
   }
 }
+
 
 // Sub-class cho product type Furniture
 class Furniture extends Product {
@@ -90,16 +83,17 @@ class Furniture extends Product {
       ...this.product_attributes, 
       product_shop: this.product_shop
     });
-    if (!newFurniture) {
-      throw new BadRequestError("Create furniture product failed");
-    }
+    if (!newFurniture) throw new BadRequestError("Create furniture product failed");
 
     const newProduct = await super.createProduct(newFurniture._id);
-    if (!newProduct) {
-      throw new BadRequestError("Create furniture product failed");
-    }
+    if (!newProduct) throw new BadRequestError("Create product failed");
     return newProduct;
   }
 }
+
+// register product types
+ProductService.registerProductType("Clothing", Clothing);
+ProductService.registerProductType("Electronics", Electronics);
+ProductService.registerProductType("Furniture", Furniture);
 
 module.exports = ProductService;

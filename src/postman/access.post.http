@@ -29,15 +29,15 @@ POST  {{baseUrl}}/v1/api/product
   Content-Type: application/json
   x-api-key: ee12231e4a79e46f59f908983528fc59d29c939542f54f8c9621fe204e04269e485de1c179f9fdac09530cf5b9928cdafe740e4776bb4127c995661bc8efd881
   x-client-id: 69732d2f572c559352602869
-  Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTczMmQyZjU3MmM1NTkzNTI2MDI4NjkiLCJlbWFpbCI6ImVjb21tZXJjZS1zaG9wLXRpcEBleGFtcGxlLmNvbSIsImlhdCI6MTc2OTQ4NzkwMSwiZXhwIjoxNzY5NjYwNzAxfQ.JTNMLwTaIT0rUsXZpDSe5XschZDCkwG2tsW11efI9CI
+  Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTczMmQyZjU3MmM1NTkzNTI2MDI4NjkiLCJlbWFpbCI6ImVjb21tZXJjZS1zaG9wLXRpcEBleGFtcGxlLmNvbSIsImlhdCI6MTc2OTUwMTI5OSwiZXhwIjoxNzY5Njc0MDk5fQ.i3rmKKIxQkyJ7JhsbodkeSITld5QO4_3oiWsMifyUac
 
   {
-    "product_name": "IP 14 64GB",
+    "product_name": "bang ghe sofa",
     "product_description": "new product.",
     "product_thumb": "Product Thumb",
     "product_price": 100,
     "product_quantity": 10,
-    "product_type": "Electronics",
+    "product_type": "Furniture",
     "product_shop": "69732d2f572c559352602869",
     "product_attributes": {
         "manufacturer": "Apple",
