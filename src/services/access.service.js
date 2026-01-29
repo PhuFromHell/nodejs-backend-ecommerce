@@ -23,6 +23,43 @@ const RoleShop = {
 };
 
 class AccessService {
+
+  handleRefreshTokenV2 = async ({keyStore, user, refreshToken}) => {
+
+    const {userId, email} = user;
+    console.log("🚀 ~ AccessService ~ userId:", userId)
+    console.log("🚀 ~ AccessService ~ refreshToken:", refreshToken)
+    console.log("🚀 ~ AccessService ~ keyStore.refreshTokensUsed:", keyStore.refreshTokensUsed)
+    if (keyStore.refreshTokensUsed && keyStore.refreshTokensUsed.includes(refreshToken)) {
+      await KeyTokenService.deleteKeyById(userId);
+      throw new ForbiddenError("Something wrong happen. Please re-login");
+    }
+
+    if (keyStore.refreshToken !== refreshToken) {
+      throw new AuthFailureError("Shop not registered");
+    }
+
+    const foundShop = await findByEmail({ email });
+    console.log("🚀 ~ AccessService ~ foundShop:", foundShop)
+    if (!foundShop) {
+      throw new AuthFailureError("Shop not registered (foundShop)");
+    }
+
+    const tokens = await createTokenPair({ userId, email }, keyStore.publicKey, keyStore.privateKey);
+
+    console.log("🚀 ~ AccessService ~ refreshToken:", refreshToken)
+    // await keyStore.update({
+    //   $set: { refreshToken: tokens.refreshToken },
+    //   $addToSet: { refreshTokensUsed: refreshToken },
+    // });
+    await KeyTokenService.updateRefreshToken(keyStore._id, tokens.refreshToken, refreshToken);
+
+    return {
+      user,
+      tokens,
+    };
+  };
+
   /**
    * 1. check token used
    * 2. decode token to get user information
@@ -67,7 +104,7 @@ class AccessService {
   handleRefreshToken = async (refreshToken) => {
     // step 1: check token used
     const foundTokenUsed =
-      await KeyTokenService.findByRefreshTokenUsed(refreshToken);
+      await KeyTokenService.findByRefreshTokensUsed(refreshToken);
     // nếu token đã bị sử dụng rồi
     if (foundTokenUsed) {
       // decode để xem là đứa nào dùng token này

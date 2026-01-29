@@ -73,11 +73,59 @@ const authentication = asyncHandler(async (req, res, next) => {
     }
     req.keyStore = keyStore;
     req.user = decodeUser;
+    return next();
   } catch (error) {
     console.log("error verify token:", error);
   }
+});
 
-  return next();
+const authenticationV2 = asyncHandler(async (req, res, next) => {
+  // step 1: check userId missing
+  const userId = req.headers[HEADER.CLIENT_ID];
+  if (!userId) {
+    throw new AuthFailureError("Invalid request");
+  }
+
+  // step 2: get accessToken from header
+  const keyStore = await findByUserId(userId);
+  console.log("🚀 ~ keyStore:", keyStore)
+  if (!keyStore) {
+    throw new NotFoundError("Not found key store");
+  }
+
+  // step 3: verify token
+  if (req.headers[HEADER.REFRESH_TOKEN]) {
+    try {
+      const refreshToken = req.headers[HEADER.REFRESH_TOKEN];
+      const decodeUser = jwt.verify(refreshToken, keyStore.privateKey);
+      if (userId !== decodeUser.userId) throw new AuthFailureError("Invalid request userid");
+      req.keyStore = keyStore;
+      req.user = decodeUser;
+      req.refreshToken = refreshToken;
+      return next();
+    } catch (error) {
+      throw error;
+    }
+  }
+
+
+  const accessToken = req.headers[HEADER.AUTHORIZATION];
+  if (!accessToken) {
+    throw new AuthFailureError("Invalid request");
+  }
+
+  // step 4: check token in db
+  try {
+    const decodeUser = jwt.verify(accessToken, keyStore.publicKey);
+    if (userId !== decodeUser.userId) {
+      throw new AuthFailureError("Invalid request userid");
+    }
+    req.keyStore = keyStore;
+    req.user = decodeUser;
+    return next();
+  } catch (error) {
+    console.log("error verify token:", error);
+  }
 });
 
 const authenticationv2 = asyncHandler(async (req, res, next) => {
@@ -137,4 +185,4 @@ const verifyJWT = async (token, keySecret) => {
   return await jwt.verify(token, keySecret);
 };
 
-module.exports = { createTokenPair, authentication, verifyJWT , authenticationv2 };
+module.exports = { createTokenPair, authentication, authenticationV2, verifyJWT };

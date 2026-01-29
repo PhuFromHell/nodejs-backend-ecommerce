@@ -8,19 +8,17 @@ const {
   CreatedResponse,
   SuccessResponse,
 } = require("../core/success.response");
+const { keys } = require("lodash");
 
 class AccessController {
   handleRefreshToken = async (req, res, next) => {
-    // v1 fixed need access token in body
     // new SuccessResponse({
     //   message: "Shop: Get new access token successfully",
-    //   metadata: await AccessService.handleRefreshToken(
-    //     req.body.refreshToken,
-    //   ),
+    //   metadata: await AccessService.handleRefreshToken(req.body.refreshToken,),
     // }).send(res);
 
-    // v2 fixed no need access token in body
-    console.log("🚀 ~ AccessController ~ req.user:", req.user)
+    // version 2
+    console.log("🚀 ~ AccessController ~ req.keyStore:", req.keyStore)
     new SuccessResponse({
       message: "Shop: Get new access token successfully",
       metadata: await AccessService.handleRefreshTokenV2({
