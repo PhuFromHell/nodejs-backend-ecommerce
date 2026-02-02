@@ -23,6 +23,35 @@ const RoleShop = {
 };
 
 class AccessService {
+  handleRefreshTokenV2 = async ({keyStore, user, refreshToken}) => {
+    const { userId, email } = user; 
+    if (keyStore.refreshTokensUsed.includes(refreshToken)) {
+      await KeyTokenService.deleteKeyById(userId)
+      throw new ForbiddenError('Some thing wrong happen, pls relogin')
+    }
+
+    if (keyStore.refreshToken !== refreshToken) throw new AuthFailureError('Shop not registered');
+
+    const foundShop = await findByEmail( { email } );
+    if (!foundShop) throw new AuthFailureError('Shop not registered');
+
+    // tạo tokken mới
+    const tokens = await createTokenPair( { userId, email }, keyStore.publicKey, keyStore.privateKey );
+
+    // await keyStore.update({
+    //   $set: { refreshToken: tokens.refreshToken },
+    //   $addToSet: { refreshTokensUsed: refreshToken }
+    // });
+    keyStore.refreshToken = tokens.refreshToken;
+    keyStore.refreshTokensUsed.push(refreshToken);
+    await keyStore.save();
+
+    return {
+      user,
+      tokens
+    }
+  };
+
   /**
    * 1. check token used
    * 2. decode token to get user information
@@ -43,11 +72,7 @@ class AccessService {
         refreshToken,
         foundTokenUsed.privateKey,
       );
-      console.log(
-        "🚀 1 ~ AccessService ~ handleRefreshToken ~ userId, email:",
-        userId,
-        email,
-      );
+
       // xóa toàn bộ token trong database
       await KeyTokenService.removeKeyById(foundTokenUsed._id);
       throw new ForbiddenError("Something wrong happen. Please re-login");
@@ -92,7 +117,6 @@ class AccessService {
   // logout
   logout = async (keyStore) => {
     const delKey = await KeyTokenService.removeKeyById(keyStore._id);
-    console.log("🚀 ~ AccessService ~ delKey:", delKey);
     return delKey;
   };
   /*
@@ -118,8 +142,8 @@ class AccessService {
     // step 3: create accessToken, refreshToken and save to database
     const privateKey = crypto.randomBytes(64).toString("hex");
     const publicKey = crypto.randomBytes(64).toString("hex");
-    console.log(`publicKey: ${publicKey}`); // in ra dang chuoi PEM
-    console.log(`privateKey: ${privateKey}`); // in ra dang chuoi PEM
+    // console.log(`publicKey: ${publicKey}`); // in ra dang chuoi PEM
+    // console.log(`privateKey: ${privateKey}`); // in ra dang chuoi PEM
 
     // step 4: generate tokens
     const tokens = await createTokenPair(
@@ -127,7 +151,6 @@ class AccessService {
       publicKey,
       privateKey,
     );
-    console.log("🚀 ~ AccessService ~ tokens:", tokens);
 
     await KeyTokenService.createKeyToken({
       userId: foundShop._id,
@@ -170,8 +193,8 @@ class AccessService {
       // created privatgeKey and publicKey here (JWT, RSA, etc...)
       const privateKey = crypto.randomBytes(64).toString("hex");
       const publicKey = crypto.randomBytes(64).toString("hex");
-      console.log(`publicKey: ${publicKey}`); // in ra dang chuoi PEM
-      console.log(`privateKey: ${privateKey}`); // in ra dang chuoi PEM
+      // console.log(`publicKey: ${publicKey}`); // in ra dang chuoi PEM
+      // console.log(`privateKey: ${privateKey}`); // in ra dang chuoi PEM
 
       const keyStore = await KeyTokenService.createKeyToken({
         userId: newShop._id,
@@ -192,7 +215,6 @@ class AccessService {
         publicKey,
         privateKey,
       );
-      console.log("🚀 ~ AccessService ~ tokens:", tokens);
 
       return {
         code: 201,
