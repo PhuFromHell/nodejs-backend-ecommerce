@@ -5,13 +5,14 @@ const  { BadRequestError, ForbiddenError, SuccessResponse } = require('../core/s
 
 class ProductController {
   createProduct = async (req, res, next) => {
-    // const productInstance = await ProductService.createProduct(req.body.product_type, req.body);
-    // const data = await productInstance.createProduct();
     new SuccessResponse({
       message: "Create new product success",
       metadata: await ProductService.createProduct(
         req.body.product_type,
-        req.body,
+        {
+          ...req.body,
+          product_shop: req.user.userId
+        },
       ),
     }).send(res);
   }
