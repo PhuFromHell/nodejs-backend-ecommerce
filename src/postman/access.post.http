@@ -24,7 +24,7 @@ POST {{baseUrl}}/v1/api/shop/signin
   }
 ###
 
-# product
+# product Electronics, Clothing
 POST {{baseUrl}}/v1/api/product
   Content-Type: application/json
   x-api-key: ee12231e4a79e46f59f908983528fc59d29c939542f54f8c9621fe204e04269e485de1c179f9fdac09530cf5b9928cdafe740e4776bb4127c995661bc8efd881
@@ -32,17 +32,30 @@ POST {{baseUrl}}/v1/api/product
   authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTcxZWVlYTE2YTFkYzc2NzAzNjVlNzUiLCJlbWFpbCI6ImVjb21tZXJjZS1zaG9wLXRpcEBleGFtcGxlLmNvbSIsImlhdCI6MTc3MDAyOTkzNCwiZXhwIjoxNzcwMjAyNzM0fQ.7EjqLd_mWUpiD3P884-3iJFGb9PpzxxdhUZDyLxnm7Y
 
   {
-    "product_name": "Áo Training Riki Pro2",
-    "product_description": "Áo tập luyện co giãn 4 chiều, thoáng khí, bền màu.",
-    "product_thumb": "https://cdn.example.com/products/riki-training-pro.png",
-    "product_price": 159000,
-    "product_quantity": 100,
+    "product_name": "Áo bóng đá Riki Home 2026",
+    "product_description": "Áo bóng đá chính hãng Riki, form thể thao, thấm hút mồ hôi tốt.",
+    "product_thumb": "https://cdn.example.com/products/riki-home-2026.png",
+    "product_price": 199000,
+    "product_quantity": 50,
     "product_type": "Clothing",
-    "product_shop": "69732d2f572c559352602869",
     "product_attributes": {
       "brand": "Riki",
-      "size": "XL",
-      "material": "Spandex + Polyester"
+      "size": "M",
+      "material": "Polyester"
     }
   }
+
+  # {
+  #   "product_name": "Tai nghe Bluetooth Riki Air Pro",
+  #   "product_description": "Tai nghe không dây Bluetooth, âm thanh rõ nét, pin bền.",
+  #   "product_thumb": "https://cdn.example.com/products/riki-air-pro.png",
+  #   "product_price": 790000,
+  #   "product_quantity": 25,
+  #   "product_type": "Electronics",
+  #   "product_attributes": {
+  #     "manufacturer": "Riki Electronics",
+  #     "model": "Air Pro 2026",
+  #     "color": "Black"
+  #   }
+  # }
 ###
