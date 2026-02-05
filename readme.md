@@ -26,3 +26,5 @@ npm i crypto --save
 npm install jsonwebtoken
 npm i lodash --save // hỗ trợ get data
 # nodejs-backend-ecommerce
+
+npm i slugify --save
